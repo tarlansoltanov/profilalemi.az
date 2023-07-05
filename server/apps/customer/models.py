@@ -16,3 +16,19 @@ class Customer(models.Model):
     def __str__(self):
         """Unicode representation of Customer."""
         return self.name
+    
+    @property
+    def total(self):
+        return sum(sale.total for sale in self.sales.all())
+    
+    @property
+    def paid(self):
+        return sum(sale.paid for sale in self.sales.all())
+    
+    @property
+    def debt(self):
+        return sum(sale.debt for sale in self.sales.all())
+    
+    @property
+    def last_sale(self):
+        return self.sales.last()

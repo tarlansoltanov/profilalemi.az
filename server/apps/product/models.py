@@ -25,6 +25,29 @@ class Product(models.Model):
                 old_product.name.delete()
             if old_product.color.products.count() == 0:
                 old_product.color.delete()
+    
+    @property
+    def total_quantity(self):
+        quantity = self.storage.aggregate(models.Sum('quantity'))['quantity__sum']
+        return quantity or 0
+    
+    @property
+    def sold(self):
+        return sum(item.sold for item in self.storage.all())
+    
+    @property
+    def left(self):
+        return self.total_quantity - self.sold
+    
+    @property
+    def price(self):
+        last = self.storage.last()
+        return last.sell_price if last else 0
+    
+    @property
+    def last_in(self):
+        last = self.storage.last()
+        return last.created_at if last else None
 
 
 class ProductName(models.Model):

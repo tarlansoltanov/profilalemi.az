@@ -58,10 +58,10 @@ def update(request, pk, template_name='product/create.html', context={}):
 def delete(request, pk):
     product = get_object_or_404(Product, pk=pk)
 
-    # if product.storage.exists():
-    #     messages.error(request, 'Bu məhsul anbarda olduğu üçün silinə bilməz!')
-    # else:
-    messages.success(request, 'Məhsul silindi!')
-    product.delete()
+    if product.storage.exists():
+        messages.error(request, 'Bu məhsul anbarda olduğu üçün silinə bilməz!')
+    else:
+        messages.success(request, 'Məhsul silindi!')
+        product.delete()
 
     return redirect('product:index')

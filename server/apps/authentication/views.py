@@ -28,4 +28,4 @@ def login_page(request, template_name='authentication/login.html', context={}):
 
 def logout_page(request):
     logout(request)
-    return redirect('base:home')
+    return redirect('core:home')

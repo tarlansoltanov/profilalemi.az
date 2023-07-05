@@ -1,6 +1,9 @@
 from django.contrib import messages
+from django.db.models import OuterRef, Subquery
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required, user_passes_test
+
+from server.apps.sale.models import Sale
 
 from .models import Customer
 from .logic.forms import CustomerForm
@@ -11,7 +14,9 @@ from .logic.forms import CustomerForm
 def index(request, template_name='customer/index.html', context={}):
     context['title'] = 'Müştərilər'
 
-    context['customers'] = Customer.objects.all().order_by('-created_at')
+    last_sale_date = Sale.objects.filter(id=OuterRef('id')).order_by('-created_at').values('created_at')[:1]
+
+    context['customers'] = Customer.objects.annotate(last_sale_date=Subquery(last_sale_date)).order_by('-last_sale_date')
 
     return render(request, template_name, context)
 

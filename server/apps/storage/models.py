@@ -19,3 +19,11 @@ class Storage(models.Model):
     def __str__(self):
         """Unicode representation of Storage."""
         return f"{self.product} - {self.quantity} - {self.buy_price} - {self.sell_price}"
+    
+    @property
+    def sold(self):
+        return self.salestorages.all().aggregate(models.Sum('quantity'))['quantity__sum'] or 0
+    
+    @property
+    def left(self):
+        return self.quantity - self.sold
