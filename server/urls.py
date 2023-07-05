@@ -25,6 +25,12 @@ urlpatterns = [
     path('', include(core_urls, namespace='core')),
 ]
 
+handler400 = 'server.apps.core.views.handler400'
+handler403 = 'server.apps.core.views.handler403'
+handler404 = 'server.apps.core.views.handler404'
+handler500 = 'server.apps.core.views.handler500'
+handler503 = 'server.apps.core.views.handler503'
+
 # Health check
 urlpatterns += [
     path("health/", include("health_check.urls")),
