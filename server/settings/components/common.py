@@ -18,6 +18,7 @@ INSTALLED_APPS = [
     # Local apps
     "server.apps.authentication",
     "server.apps.core",
+    "server.apps.color",
 
     # Django apps
     "django.contrib.admin",
