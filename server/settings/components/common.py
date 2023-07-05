@@ -16,6 +16,7 @@ from server.settings.components import BASE_DIR
 
 INSTALLED_APPS = [
     # Local apps
+    "server.apps.authentication",
     "server.apps.core",
 
     # Django apps
