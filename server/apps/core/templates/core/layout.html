@@ -1,0 +1,213 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html class="no-js css-menubar" lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
+    <meta name="description" content="Commerce Management System">
+    <meta name="author" content="Tarlan Soltanov">
+    
+    <title>{{ title }} | Profil Aləmi</title>
+    
+    <link rel="apple-touch-icon" href="{% static 'assets/images/apple-touch-icon.png' %}">
+    <link rel="shortcut icon" href="{% static 'assets/images/favicon.ico' %}">
+    
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="{% static 'assets/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/bootstrap-extend.min.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/site.min.css' %}">
+    
+    <!-- Plugins -->
+    <link rel="stylesheet" href="{% static 'assets/vendor/animsition/animsition.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/vendor/asscrollable/asScrollable.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/vendor/switchery/switchery.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/vendor/intro-js/introjs.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/vendor/slidepanel/slidePanel.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/vendor/flag-icon-css/flag-icon.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/vendor/waves/waves.css' %}">
+
+    <!-- Page Styles -->
+    {% block style %}{% endblock style %}
+    
+    <!-- Fonts -->
+    <link rel="stylesheet" href="{% static 'assets/fonts/material-design/material-design.min.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/fonts/brand-icons/brand-icons.min.css' %}">
+    <link rel='stylesheet' href='http://fonts.googleapis.com/css?family=Roboto:300,400,500,300italic'>
+    
+    <!-- Scripts -->
+    <script src="{% static 'assets/vendor/breakpoints/breakpoints.js' %}"></script>
+    <script>
+      Breakpoints();
+    </script>
+  </head>
+  <body class="animsition dashboard">
+    <nav class="site-navbar navbar navbar-default navbar-fixed-top navbar-mega" role="navigation">
+    
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggler hamburger hamburger-close navbar-toggler-left hided" data-toggle="menubar">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="hamburger-bar"></span>
+        </button>
+        <button type="button" class="navbar-toggler collapsed" data-target="#site-navbar-collapse" data-toggle="collapse">
+          <i class="icon md-more" aria-hidden="true"></i>
+        </button>
+        <div class="navbar-brand navbar-brand-center">
+          <img class="navbar-brand-logo" src="{% static 'assets/images/logo.png' %}" title="CodeShift">
+          <span class="navbar-brand-text hidden-xs-down"> CodeShift</span>
+        </div>
+      </div>
+    
+      <div class="navbar-container container-fluid">
+        <!-- Navbar Collapse -->
+        <div class="collapse navbar-collapse navbar-collapse-toolbar" id="site-navbar-collapse">
+          <!-- Navbar Toolbar -->
+          <ul class="nav navbar-toolbar">
+            <li class="nav-item hidden-float" id="togglemenubar">
+              <a class="nav-link" data-toggle="menubar" href="#" role="button">
+                <i class="icon hamburger hamburger-arrow-left">
+                  <span class="sr-only">Toggle menubar</span>
+                  <span class="hamburger-bar"></span>
+                </i>
+              </a>
+            </li>
+            <li class="nav-item hidden-sm-down" id="toggleFullscreen">
+              <a class="nav-link icon icon-fullscreen" data-toggle="fullscreen" href="#" role="button">
+                <span class="sr-only">Toggle fullscreen</span>
+              </a>
+            </li>
+          </ul>
+          <!-- End Navbar Toolbar -->
+    
+          <!-- Navbar Toolbar Right -->
+          <ul class="nav navbar-toolbar navbar-right navbar-toolbar-right">
+          </ul>
+          <!-- End Navbar Toolbar Right -->
+        </div>
+        <!-- End Navbar Collapse -->
+      </div>
+    </nav>    
+    
+    <div class="site-menubar">
+      <div class="site-menubar-body">
+        <div>
+          <div>
+            <ul class="site-menu" data-plugin="menu">
+              <li class="site-menu-category">General</li>
+              {% if request.user.is_superuser %}
+                <li class="site-menu-item">
+                  <a class="animsition-link" href="{% url 'core:home' %}">
+                    <i class="site-menu-icon md-home" aria-hidden="true"></i>
+                    <span class="site-menu-title">Ana Səhifə</span>
+                  </a>
+                </li>
+              {% endif %}
+            </ul>   
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Page -->
+    <div class="page">
+      <div class="page-header">
+        <h1 class="page-title">{{ title }}</h1>
+        {% if title != 'Ana Səhifə' %}
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="{% url 'core:home' %}">Ana Səhifə</a></li>
+          {% block breadcrumb %}{% endblock breadcrumb %}
+        </ol>
+        {% endif %}
+      </div>
+
+      <div class="page-content container-fluid">
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-{% if message.tags == 'error' %}danger{% else %}{{ message.tags }}{% endif %} alert-dismissible fade show mt-3" role="alert">
+                    <span >{{ message }}</span>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            {% endfor %}
+        {% endif %}
+        
+        {% block content %}{% endblock content %}
+      </div>
+    </div>
+    <!-- End Page -->
+
+
+    <!-- Footer -->
+    <footer class="site-footer">
+      <div class="site-footer-legal">© {% now "Y" %} Profile Aləmi</div>
+      <div class="site-footer-right">
+        DEVELOPED and DESIGNED BY CodeShift <a href="https://codeshift.az">CodeShift</a>
+      </div>
+    </footer>
+
+    <!-- Core  -->
+    <script src="{% static 'assets/vendor/babel-external-helpers/babel-external-helpers.js' %}"></script>
+    <script src="{% static 'assets/vendor/jquery/jquery.js' %}"></script>
+    <script src="{% static 'assets/vendor/popper-js/umd/popper.min.js' %}"></script>
+    <script src="{% static 'assets/vendor/bootstrap/bootstrap.js' %}"></script>
+    <script src="{% static 'assets/vendor/animsition/animsition.js' %}"></script>
+    <script src="{% static 'assets/vendor/mousewheel/jquery.mousewheel.js' %}"></script>
+    <script src="{% static 'assets/vendor/asscrollbar/jquery-asScrollbar.js' %}"></script>
+    <script src="{% static 'assets/vendor/asscrollable/jquery-asScrollable.js' %}"></script>
+    <script src="{% static 'assets/vendor/ashoverscroll/jquery-asHoverScroll.js' %}"></script>
+    <script src="{% static 'assets/vendor/waves/waves.js' %}"></script>
+    
+    <!-- Plugins -->
+    <script src="{% static 'assets/vendor/switchery/switchery.js' %}"></script>
+    <script src="{% static 'assets/vendor/intro-js/intro.js' %}"></script>
+    <script src="{% static 'assets/vendor/screenfull/screenfull.js' %}"></script>
+    <script src="{% static 'assets/vendor/slidepanel/jquery-slidePanel.js' %}"></script>
+
+    <!-- Page Plugins -->
+    {% block plugins %}{% endblock plugins %}  
+    
+    <!-- Scripts -->
+    <script src="{% static 'assets/js/component.js' %}"></script>
+    <script src="{% static 'assets/js/plugin.js' %}"></script>
+    <script src="{% static 'assets/js/base.js' %}"></script>
+    <script src="{% static 'assets/js/config.js' %}"></script>
+    
+    <script src="{% static 'assets/js/section/menubar.js' %}"></script>
+    <script src="{% static 'assets/js/section/gridMenu.js' %}"></script>
+    <script src="{% static 'assets/js/section/sidebar.js' %}"></script>
+    <script src="{% static 'assets/js/section/pageAside.js' %}"></script>
+    <script src="{% static 'assets/js/plugin/menu.js' %}"></script>
+    
+    <script src="{% static 'assets/js/config/colors.js' %}"></script>
+    <script src="{% static 'assets/js/config/tour.js' %}"></script>
+    <script>Config.set('assets', 'assets');</script>
+    
+    <!-- Page -->
+    <script src="{% static 'assets/js/site.js' %}"></script>
+    <script src="{% static 'assets/js/plugin/asscrollable.js' %}"></script>
+    <script src="{% static 'assets/js/plugin/slidepanel.js' %}"></script>
+    <script src="{% static 'assets/js/plugin/switchery.js' %}"></script>
+
+    <!-- Page -->
+    {% block scripts %}{% endblock scripts %}
+
+    <!-- Menu Bar Active URL -->
+    <script type="text/javaScript">
+      function initActiveMenu() {
+          $(".site-menu a").each(function () {
+              var pageUrl = window.location.href.split(/[?#]/)[0];
+              if (this.href == pageUrl) { 
+                  $(this).parent().addClass("active");
+                  if ($(this).parent().parent().parent().hasClass('site-menu-item')) {
+                      $(this).parent().parent().parent().addClass("active open");
+                  }
+         
+              }
+          });
+      }
+      initActiveMenu();
+    </script>
+  </body>
+</html>
