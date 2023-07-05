@@ -22,6 +22,7 @@ from server.apps.core import urls as core_urls
 from server.apps.worker import urls as worker_urls
 from server.apps.product import urls as product_urls
 from server.apps.storage import urls as storage_urls
+from server.apps.customer import urls as customer_urls
 from server.apps.authentication import urls as auth_urls
 
 urlpatterns = [
@@ -31,6 +32,7 @@ urlpatterns = [
     path('worker/', include(worker_urls, namespace='worker')),
     path('product/', include(product_urls, namespace='product')),
     path('storage/', include(storage_urls, namespace='storage')),
+    path('customer/', include(customer_urls, namespace='customer')),
 ]
 
 handler400 = 'server.apps.core.views.handler400'

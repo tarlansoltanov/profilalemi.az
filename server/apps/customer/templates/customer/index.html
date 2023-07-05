@@ -1,0 +1,115 @@
+{% extends 'core/layout.html' %}
+
+{% load static %}
+
+
+{% block style %}
+<link rel="stylesheet" href="{% static 'assets/vendor/datatables.net-bs4/dataTables.bootstrap4.css' %}">
+<link rel="stylesheet" href="{% static 'assets/vendor/datatables.net-fixedheader-bs4/dataTables.fixedheader.bootstrap4.css' %}">
+<link rel="stylesheet" href="{% static 'assets/vendor/datatables.net-fixedcolumns-bs4/dataTables.fixedcolumns.bootstrap4.css' %}">
+<link rel="stylesheet" href="{% static 'assets/vendor/datatables.net-rowgroup-bs4/dataTables.rowgroup.bootstrap4.css' %}">
+<link rel="stylesheet" href="{% static 'assets/vendor/datatables.net-scroller-bs4/dataTables.scroller.bootstrap4.css' %}">
+<link rel="stylesheet" href="{% static 'assets/vendor/datatables.net-select-bs4/dataTables.select.bootstrap4.css' %}">
+<link rel="stylesheet" href="{% static 'assets/vendor/datatables.net-responsive-bs4/dataTables.responsive.bootstrap4.css' %}">
+<link rel="stylesheet" href="{% static 'assets/vendor/datatables.net-buttons-bs4/dataTables.buttons.bootstrap4.css' %}">
+<style>
+    .form-btn{
+        margin: 0 10px;
+    }
+</style>
+{% endblock style %}
+
+
+{% block breadcrumb %}
+<li class="breadcrumb-item active">{{ title }}</li>
+{% endblock breadcrumb %}
+
+
+{% block content %}
+<!-- Customers table -->
+  <div class="panel">
+    <header class="panel-heading">
+        <h3 class="panel-title">{{ title }}</h3>
+    </header>
+    <div class="panel-body">
+      <div class="d-flex justify-content-end">
+        <a href="{% url 'customer:create' %}" type="button" class="btn btn-primary waves-effect waves-classic form-btn">+ Əlavə Et</a>
+      </div>
+      <table class="table table-hover dataTable table-striped w-full" id="customers">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Ad</th>
+            <th>Satış sayı</th>
+            <th>Ümumi gəlir</th>
+            <th>Ödənilib</th>
+            <th>Borc</th>
+            <th>Axrıncı Satış Tarixi</th>
+            <th>Yaradılıb</th>
+            <th>Actions</th>
+          </tr>
+          <tr style="display: none;" id="searchHeader">
+            <th style="display: none;"></th>
+            <th style="display: none;">Ad</th>
+            <th style="display: none;">Satış sayı</th>
+            <th style="display: none;">Ümumi gəlir</th>
+            <th style="display: none;">Ödənilib</th>
+            <th style="display: none;">Borc</th>
+            <th style="display: none;">Axrıncı Satış Tarixi</th>
+            <th style="display: none;">Yaradılıb</th>
+            <th style="display: none;"></th>
+          </tr>
+        </thead>
+        <tbody>
+            {% for item in customers %}
+              <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ item.name }}</td>
+                <td>{{ item.sales|length }}</td>
+                <td>{{ item.total }} ₼</td>
+                <td>{{ item.paid }} ₼</td>
+                <td>{{ item.debt }} ₼</td>
+                <td>{{ item.last_sale.created_at|date:"d/m/Y H:i" }}</td>
+                <td>{{ item.created_at|date:"d/m/Y" }}</td>
+                <td>
+                  <a href="{% url 'customer:update' pk=item.id %}" class="btn btn-sm btn-icon btn-pure btn-default" data-toggle="tooltip" data-original-title="Düzəliş et">
+                    <i class="icon md-edit" aria-hidden="true"></i>
+                  </a>
+                  <a href="{% url 'customer:delete' pk=item.id %}" class="btn btn-sm btn-icon btn-pure btn-default" data-toggle="tooltip" data-original-title="Sil">
+                    <i class="icon md-delete" aria-hidden="true"></i>
+                  </a>
+                </td>
+              </tr>
+            {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+<!-- End Customers table -->
+{% endblock content %}
+
+
+{% block plugins %}
+<script type="text/javascript" src="{% static 'assets/vendor/datatables.net/jquery.dataTables.js' %}"></script>
+<script type="text/javascript" src="{% static 'assets/vendor/datatables.net-bs4/dataTables.bootstrap4.js' %}"></script>
+<script type="text/javascript" src="{% static 'assets/vendor/datatables.net-fixedheader/dataTables.fixedHeader.js' %}"></script>
+<script type="text/javascript" src="{% static 'assets/vendor/datatables.net-fixedcolumns/dataTables.fixedColumns.js' %}"></script>
+<script type="text/javascript" src="{% static 'assets/vendor/datatables.net-rowgroup/dataTables.rowGroup.js' %}"></script>
+<script type="text/javascript" src="{% static 'assets/vendor/datatables.net-scroller/dataTables.scroller.js' %}"></script>
+<script type="text/javascript" src="{% static 'assets/vendor/datatables.net-responsive/dataTables.responsive.js' %}"></script>
+<script type="text/javascript" src="{% static 'assets/vendor/datatables.net-responsive-bs4/responsive.bootstrap4.js' %}"></script>
+<script type="text/javascript" src="{% static 'assets/vendor/datatables.net-buttons/dataTables.buttons.js' %}"></script>
+<script type="text/javascript" src="{% static 'assets/vendor/datatables.net-buttons/buttons.flash.js' %}"></script>
+<script type="text/javascript" src="{% static 'assets/vendor/datatables.net-buttons/buttons.print.js' %}"></script>
+<script type="text/javascript" src="{% static 'assets/vendor/datatables.net-buttons/buttons.colVis.js' %}"></script>
+<script type="text/javascript" src="{% static 'assets/vendor/datatables.net-buttons-bs4/buttons.bootstrap4.js' %}"></script>
+<script type="text/javascript" src="{% static 'assets/vendor/datatables.net-buttons/buttons.html5.js' %}"></script>
+<script type="text/javascript" src="{% static 'assets/vendor/asrange/jquery-asRange.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'assets/vendor/bootbox/bootbox.js' %}"></script>
+<script type="text/javascript" src="{% static 'assets/js/plugin/datatables.js' %}"></script>
+{% endblock plugins %}
+
+
+{% block scripts %}
+<script type="text/javascript" src="{% static 'assets/js/pages/customer/index.js' %}"></script>
+{% endblock scripts %}
