@@ -19,6 +19,7 @@ from django.urls import path, include
 from django.conf import settings
 
 from server.apps.core import urls as core_urls
+from server.apps.sale import urls as sale_urls
 from server.apps.worker import urls as worker_urls
 from server.apps.product import urls as product_urls
 from server.apps.storage import urls as storage_urls
@@ -29,6 +30,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include(core_urls, namespace='core')),
     path('auth/', include(auth_urls, namespace='auth')),
+    path('sale/', include(sale_urls, namespace='sale')),
     path('worker/', include(worker_urls, namespace='worker')),
     path('product/', include(product_urls, namespace='product')),
     path('storage/', include(storage_urls, namespace='storage')),

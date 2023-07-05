@@ -102,7 +102,16 @@
                     <span class="site-menu-title">Ana Səhifə</span>
                   </a>
                 </li>
+              {% endif %}
 
+              <li class="site-menu-item">
+                <a class="animsition-link" href="{% url 'sale:index' %}">
+                  <i class="site-menu-icon md-assignment" aria-hidden="true"></i>
+                  <span class="site-menu-title">Satışlar</span>
+                </a>
+              </li>
+
+              {% if request.user.is_superuser %}
                 <li class="site-menu-item">
                   <a class="animsition-link" href="{% url 'customer:index' %}">
                     <i class="site-menu-icon md-accounts" aria-hidden="true"></i>

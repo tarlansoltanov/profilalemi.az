@@ -1,0 +1,266 @@
+{% extends 'core/layout.html' %}
+
+{% load static %}
+
+
+{% block style %}
+  <link rel="stylesheet" href="{% static 'assets/vendor/select2/select2.css' %}">
+
+  <link rel="stylesheet" href="{% static 'assets/vendor/dropify/dropify.css' %}">
+
+  <style>
+      .form-input{
+          margin: 20px 0;
+      }
+      .form-btn{
+          margin: 0 10px;
+      }
+  </style>
+{% endblock style %}
+
+
+{% block breadcrumb %}
+  <li class="breadcrumb-item"><a href="{% url 'sale:index' %}">Satışlar</a></li>
+  <li class="breadcrumb-item active">{{ title }}</li>
+{% endblock breadcrumb %}
+
+
+{% block content %}
+<div class="panel">
+  <div class="panel-body container-fluid">
+    <form method="POST">
+        {% csrf_token %}
+
+        <div class="row row-lg">
+          <div class="col-md-6">
+            <!-- Product Name Input -->
+            <div class="form-wrap" id="name-wrap">
+              <h5 class="form-title">Məhsul Adı</h5>
+              <div class="form-input">
+                <select name="name" id="name" class="form-control" data-plugin="select2" data-placeholder="Ad daxil edin" data-allow-clear="true" required>
+                  <option></option>
+                  {% for product in products %}
+                    <option value="{{ product.id }}" {% if product.id == form.name.value|add:"0" %}selected{% endif %}>{{ product.name }}</option>
+                  {% endfor %}
+                </select>
+                
+                <div class="messages col-12">
+                  <div class="invalid-feedback" style="display:block;">
+                    {% for error in form.name.errors %}
+                      {{ error }}
+                    {% endfor %}
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- End Product Name Input -->
+          </div>
+          <div class="col-md-6">
+            <!-- Product Color Input -->
+            <div class="form-wrap" id="color-wrap">
+              <h5 class="form-title">Məhsul Rəngi</h5>
+              <div class="form-input">
+                <select name="color" id="color" class="form-control" data-plugin="select2" data-placeholder="Rəng seçin" data-allow-clear="true" required>
+                  <option></option>
+                  {% for color in colors %}
+                    <option value="{{ color.id }}" {% if color.id == form.color.value|add:"0" %}selected{% endif %}>{{ color.name }}</option>
+                  {% endfor %}
+                </select>
+                
+                <div class="messages col-12">
+                  <div class="invalid-feedback" style="display:block;">
+                    {% for error in form.color.errors %}
+                      {{ error }}
+                    {% endfor %}
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- End Product Color Input -->
+          </div>
+        </div>
+        <div class="row row-lg">
+          <div class="col-md-4">
+            <!-- Product Quantity Input -->
+            <div class="form-wrap" id="quantity-wrap">
+              <h5 class="form-title">Məhsul Sayı</h5>
+              <div class="form-input">
+                <input name="quantity" id="quantity" type="number" class="form-control form-control-md" placeholder="Məhsul sayı daxil edin" required value="{% if form.quantity.value %}{{ form.quantity.value }}{% else %}0{% endif %}">
+                
+                <div class="messages col-12">
+                  <div class="invalid-feedback" style="display:block;">
+                    {% for error in form.quantity.errors %}
+                      {{ error }}
+                    {% endfor %}
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- End Product Quantity Input -->
+          </div>
+          <div class="col-md-4">
+            <!-- Product Sell Price Input -->
+            <div class="form-wrap" id="sell_price-wrap">
+              <h5 class="form-title">Məhsul Satış Qiyməti</h5>
+              <div class="form-input">
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text">₼</span>
+                  </div>
+                  <input name="sell_price" id="sell_price" type="number" step="any" class="form-control form-control-md" placeholder="Maya Qiyməti daxil edin" required value="{% if form.sell_price.value %}{{ form.sell_price.value }}{% else %}0{% endif %}">
+                </div>
+                
+                <div class="messages col-12">
+                  <div class="invalid-feedback" style="display:block;">
+                    {% for error in form.sell_price.errors %}
+                      {{ error }}
+                    {% endfor %}
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- End Product Sell Price Input -->
+          </div>
+          <div class="col-md-4">
+            <!-- Total Price Input -->
+            <div class="form-wrap" id="total_price-wrap">
+              <h5 class="form-title">Ümumi Qiyməti</h5>
+              <div class="form-input">
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text">₼</span>
+                  </div>
+                  <input id="total_price" type="number" step="any" class="form-control form-control-md" disabled>
+                </div>
+              </div>
+            </div>
+            <!-- End Product Sell Price Input -->
+          </div>
+        </div>
+        <div class="row row-lg">
+          <div class="col-md-6">
+            <!-- Customer Input -->
+            <div class="form-wrap" id="customer-wrap">
+              <h5 class="form-title">Müştəri</h5>
+              <div class="form-input">
+                <select name="customer" id="customer" class="form-control" data-plugin="select2" data-placeholder="Müştəri seçin" data-allow-clear="true" data-tags="true" required>
+                  <option></option>
+                  {% for customer in customers %}
+                    <option value="{{ customer.id }}" {% if customer.id == form.customer.value|add:"0" %}selected{% endif %}>{{ customer.name }}</option>
+                  {% endfor %}
+                </select>
+                
+                <div class="messages col-12">
+                  <div class="invalid-feedback" style="display:block;">
+                    {% for error in form.customer.errors %}
+                      {{ error }}
+                    {% endfor %}
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- End Customer Input -->
+          </div>
+          <div class="col-md-6">
+            <!-- Paid Input -->
+            <div class="form-wrap" id="paid-wrap">
+              <h5 class="form-title">Ödənilən məbləğ</h5>
+              <div class="form-input">
+                <input name="paid" id="paid" type="number" class="form-control form-control-md" placeholder="Ödənilən məbləği daxil edin" required value="{% if form.paid.value %}{{ form.paid.value }}{% else %}0{% endif %}">
+                
+                <div class="messages col-12">
+                  <div class="invalid-feedback" style="display:block;">
+                    {% for error in form.paid.errors %}
+                      {{ error }}
+                    {% endfor %}
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- End Paid Input -->
+          </div>
+        </div>
+        <div class="d-flex justify-content-end">
+          <div class="submit-wrap">
+            <button type="submit" class="btn btn-primary waves-effect waves-classic form-btn">Yadda Saxla</button>
+          </div>
+          <div class="cancel-wrap">
+            <a href="{% url 'sale:index' %}" type="button" class="btn btn-danger waves-effect waves-classic form-btn">Ləğv et</a>
+          </div>
+        </div>
+    </form>
+  </div>
+</div>
+{% endblock content %}
+
+
+{% block plugins %}
+<script type="text/javascript" src="{% static 'assets/vendor/select2/select2.full.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'assets/js/plugin/select2.js' %}"></script>
+
+<script type="text/javascript" src="{% static 'assets/vendor/jquery-ui/jquery-ui.js' %}"></script>
+<script type="text/javascript" src="{% static 'assets/vendor/dropify/dropify.min.js' %}"></script>
+
+<script type="text/javascript" src="{% static 'assets/js/plugin/dropify.js' %}"></script>
+{% endblock plugins %}
+
+
+{% block scripts %}
+<script type="text/javascript" src="{% static 'assets/js/pages/sale/create.js' %}"></script>
+<script>
+  const changeTotalPrice = () => {
+    const quantity = $('#quantity').val();
+    const sell_price = $('#sell_price').val();
+    const total_price = quantity * sell_price;
+    $('#total_price').val(total_price);
+  }
+  $('#quantity').on('keyup', function() {
+    changeTotalPrice();
+  });
+
+  $('#sell_price').on('keyup', function() {
+    changeTotalPrice();
+  });
+
+  let product_prices = {{ product_prices|safe }};
+
+    function changeProductData() {
+        const product_id = $('#name').val();
+        const color_id = $('#color').val();
+        const product_data = product_prices[product_id][color_id];
+        
+
+        if (product_data && product_data.left > 0) {
+            $('#sell_price').val(product_data.price);
+            $('#quantity').val(product_data.left);
+            changeTotalPrice();
+        } else {
+            $('#sell_price').val(0);
+            $('#quantity').val(0);
+            changeTotalPrice();
+        }
+        changeTotalPrice();
+    };
+
+    $('#name').on('change', function() {
+        const product_id = $(this).val();
+        const color_id = $('#color').val();
+        
+        if (product_id && color_id) {
+            changeProductData();
+        }
+    });
+
+    $('#color').on('change', function() {
+        const product_id = $('#name').val();
+        const color_id = $(this).val();
+        if (product_id && color_id) {
+            changeProductData();
+        }
+    });
+
+    
+  changeTotalPrice();
+
+</script>
+{% endblock scripts %}

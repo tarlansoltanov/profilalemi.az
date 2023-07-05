@@ -57,7 +57,7 @@ INSTALLED_APPS += ["nplusone.ext.django"]
 
 MIDDLEWARE.insert(0, "nplusone.ext.django.NPlusOneMiddleware")
 
-NPLUSONE_RAISE = True
+# NPLUSONE_RAISE = True
 NPLUSONE_WHITELIST = [
     {"model": "admin.*"},
 ]

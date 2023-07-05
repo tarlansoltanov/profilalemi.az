@@ -17,4 +17,6 @@
   (0, _jquery.default)(document).ready(function ($$$1) {
     (0, _Site.run)();
   });
+
+  $('#income').dataTable();
 });

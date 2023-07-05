@@ -1,7 +1,6 @@
 {% extends 'core/layout.html' %}
 
 {% load static %}
-{% load i18n %}
 
 
 {% block style %}
@@ -22,42 +21,81 @@
 
 
 {% block breadcrumb %}
-
+<li class="breadcrumb-item active">{{ title }}</li>
 {% endblock breadcrumb %}
 
 
 {% block content %}
-{% comment %} <div class="panel">
-  <header class="panel-heading">
-      <h3 class="panel-title">{{ title }}</h3>
-  </header>
-  <div class="panel-body">
-    <!-- Income table -->
-    <table class="table table-hover dataTable table-striped w-full" id="income">
-      <thead>
-        <tr>
-          <th>#</th>
-          <th>Ay</th>
-          <th>Gəlir</th>
-          <th>Xərc</th>
-          <th>Ümumi</th>
-        </tr>
-      </thead>
-      <tbody>
-          {% for item in report %}
-            <tr>
-              <td>{{ forloop.counter }}</td>
-              <td>{% language 'az-az' %}{{ item.month|date:"F" }}{% endlanguage %}</td>
-              <td>{{ item.income }} ₼</td>
-              <td>{{ item.outcome }} ₼</td>
-              <td>{{ item.total }} ₼</td>
-            </tr>
-          {% endfor %}
-      </tbody>
-    </table>
-    <!-- End Income table -->
+<!-- Sales table -->
+  <div class="panel">
+    <header class="panel-heading">
+        <h3 class="panel-title">{{ title }}</h3>
+    </header>
+    <div class="panel-body">
+      <div class="d-flex justify-content-end">
+        <a href="{% url 'sale:create' %}" type="button" class="btn btn-primary waves-effect waves-classic form-btn">+ Əlavə Et</a>
+      </div>
+      <table class="table table-hover dataTable table-striped w-full" id="sales">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Ad</th>
+            <th>Rəng</th>
+            <th>Müştəri</th>
+            <th>Satış Sayı</th>
+            <th>Satış Qiyməti</th>
+            <th>Ümumi Qiymət</th>
+            <th>Ödənilən</th>
+            <th>Borc</th>
+            <th>Satıcı</th>
+            <th>Satış tarixi</th>
+            <th>Actions</th>
+          </tr>
+          <tr style="display: none;" id="searchHeader">
+            <th style="display: none;"></th>
+            <th style="display: none;">Ad</th>
+            <th style="display: none;">Rəng</th>
+            <th style="display: none;">Müştəri</th>
+            <th style="display: none;">Satış Sayı</th>
+            <th style="display: none;">Satış Qiyməti</th>
+            <th style="display: none;">Ümumi Qiymət</th>
+            <th style="display: none;">Ödənilən</th>
+            <th style="display: none;">Borc</th>
+            <th style="display: none;">Satıcı</th>
+            <th style="display: none;">Satış tarixi</th>
+            <th style="display: none;"></th>
+          </tr>
+        </thead>
+        <tbody>
+            {% for item in sales %}
+              <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ item.product.name }}</td>
+                <td>{{ item.product.color }}</td>
+                <td>{{ item.customer }}</td>
+                <td>{{ item.quantity }}</td>
+                <td>{{ item.sell_price }} ₼</td>
+                <td>{{ item.total }} ₼</td>
+                <td>{{ item.paid }} ₼</td>
+                <td>{{ item.debt }} ₼</td>
+                <td>{{ item.user.get_full_name }}</td>
+                <td>{{ item.created_at|date:"d/m/Y H:i" }}</td>
+                <td>
+                  <a href="{% url 'sale:update' pk=item.id %}" class="btn btn-sm btn-icon btn-pure btn-default" data-toggle="tooltip" data-original-title="Düzəliş et">
+                    <i class="icon md-edit" aria-hidden="true"></i>
+                  </a>
+                  <a href="{% url 'sale:delete' pk=item.id %}" class="btn btn-sm btn-icon btn-pure btn-default" data-toggle="tooltip" data-original-title="Sil">
+                    <i class="icon md-delete" aria-hidden="true"></i>
+                  </a>
+                </td>
+              </tr>
+            {% endfor %}
+        </tbody>
+      </table>
+      <div class="mb-3" id="total"></div>
+    </div>
   </div>
-</div> {% endcomment %}
+<!-- End Sales table -->
 {% endblock content %}
 
 
@@ -83,5 +121,5 @@
 
 
 {% block scripts %}
-<script src="{% static 'assets/js/pages/home.js' %}"></script>
+<script type="text/javascript" src="{% static 'assets/js/pages/sale/index_worker.js' %}"></script>
 {% endblock scripts %}
