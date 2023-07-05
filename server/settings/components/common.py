@@ -23,6 +23,7 @@ INSTALLED_APPS = [
     "server.apps.product",
     "server.apps.storage",
     "server.apps.customer",
+    "server.apps.sale",
 
     # Django apps
     "django.contrib.admin",
