@@ -1,0 +1,123 @@
+{% extends 'core/layout.html' %}
+
+{% load static %}
+
+
+{% block style %}
+<link rel="stylesheet" href="{% static 'assets/vendor/datatables.net-bs4/dataTables.bootstrap4.css' %}">
+<link rel="stylesheet" href="{% static 'assets/vendor/datatables.net-fixedheader-bs4/dataTables.fixedheader.bootstrap4.css' %}">
+<link rel="stylesheet" href="{% static 'assets/vendor/datatables.net-fixedcolumns-bs4/dataTables.fixedcolumns.bootstrap4.css' %}">
+<link rel="stylesheet" href="{% static 'assets/vendor/datatables.net-rowgroup-bs4/dataTables.rowgroup.bootstrap4.css' %}">
+<link rel="stylesheet" href="{% static 'assets/vendor/datatables.net-scroller-bs4/dataTables.scroller.bootstrap4.css' %}">
+<link rel="stylesheet" href="{% static 'assets/vendor/datatables.net-select-bs4/dataTables.select.bootstrap4.css' %}">
+<link rel="stylesheet" href="{% static 'assets/vendor/datatables.net-responsive-bs4/dataTables.responsive.bootstrap4.css' %}">
+<link rel="stylesheet" href="{% static 'assets/vendor/datatables.net-buttons-bs4/dataTables.buttons.bootstrap4.css' %}">
+<style>
+    .form-btn{
+        margin: 0 10px;
+    }
+</style>
+{% endblock style %}
+
+
+{% block breadcrumb %}
+<li class="breadcrumb-item active">{{ title }}</li>
+{% endblock breadcrumb %}
+
+
+{% block content %}
+<!-- Storage table -->
+  <div class="panel">
+    <header class="panel-heading">
+        <h3 class="panel-title">{{ title }}</h3>
+    </header>
+    <div class="panel-body">
+      <div class="d-flex justify-content-end">
+        <a href="{% url 'storage:create' %}" type="button" class="btn btn-primary waves-effect waves-classic form-btn">+ Əlavə Et</a>
+      </div>
+      <table class="table table-hover dataTable table-striped w-full" id="storage">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Ad</th>
+            <th>Rəng</th>
+            <th>Daxil olan say</th>
+            <th>Satılan say</th>
+            <th>Qalıq say</th>
+            <th>Alış Qiyməti</th>
+            <th>Cəm</th>
+            <th>Standart Satış Qiyməti</th>
+            <th>Daxil olma tarixi</th>
+            <th>Actions</th>
+          </tr>
+          <tr style="display: none;" id="searchHeader">
+            <th style="display: none;"></th>
+            <th style="display: none;">Ad</th>
+            <th style="display: none;">Rəng</th>
+            <th style="display: none;">Daxil olan say</th>
+            <th style="display: none;">Satılan say</th>
+            <th style="display: none;">Qalıq say</th>
+            <th style="display: none;">Alış Qiyməti</th>
+            <th style="display: none;">Cəm</th>
+            <th style="display: none;">Standart Satış Qiyməti</th>
+            <th style="display: none;">Daxil olma tarixi</th>
+            <th style="display: none;"></th>
+          </tr>
+        </thead>
+        <tbody>
+            {% for item in storage %}
+              <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ item.product.name }}</td>
+                <td>{{ item.product.color }}</td>
+                <td>{{ item.quantity }}</td>
+                <td>{{ item.sold }}</td>
+                <td>{{ item.left }}</td>
+                <td>{{ item.buy_price }} ₼</td>
+                {% comment %} <td>{% widthratio item.buy_price 1 item.left %} ₼</td> {% endcomment %}
+                <td>{{ item.sell_price }} ₼</td>
+                <td>{{ item.created_at|date:"d/m/Y H:i" }}</td>
+                <td>
+                  <a href="{% url 'storage:update' pk=item.id %}" class="btn btn-sm btn-icon btn-pure btn-default" data-toggle="tooltip" data-original-title="Düzəliş et">
+                    <i class="icon md-edit" aria-hidden="true"></i>
+                  </a>
+                  <a href="{% url 'storage:delete' pk=item.id %}" class="btn btn-sm btn-icon btn-pure btn-default" data-toggle="tooltip" data-original-title="Sil">
+                    <i class="icon md-delete" aria-hidden="true"></i>
+                  </a>
+                </td>
+              </tr>
+            {% endfor %}
+        </tbody>
+      </table>
+      <div class="mb-3" id="total_left"></div>
+      <div class="mb-3" id="total_price"></div>
+    </div>
+  </div>
+<!-- End Storage table -->
+{% endblock content %}
+
+
+{% block plugins %}
+<script type="text/javascript" src="{% static 'assets/vendor/datatables.net/jquery.dataTables.js' %}"></script>
+<script type="text/javascript" src="{% static 'assets/vendor/datatables.net-bs4/dataTables.bootstrap4.js' %}"></script>
+<script type="text/javascript" src="{% static 'assets/vendor/datatables.net-fixedheader/dataTables.fixedHeader.js' %}"></script>
+<script type="text/javascript" src="{% static 'assets/vendor/datatables.net-fixedcolumns/dataTables.fixedColumns.js' %}"></script>
+<script type="text/javascript" src="{% static 'assets/vendor/datatables.net-rowgroup/dataTables.rowGroup.js' %}"></script>
+<script type="text/javascript" src="{% static 'assets/vendor/datatables.net-scroller/dataTables.scroller.js' %}"></script>
+<script type="text/javascript" src="{% static 'assets/vendor/datatables.net-responsive/dataTables.responsive.js' %}"></script>
+<script type="text/javascript" src="{% static 'assets/vendor/datatables.net-responsive-bs4/responsive.bootstrap4.js' %}"></script>
+<script type="text/javascript" src="{% static 'assets/vendor/datatables.net-buttons/dataTables.buttons.js' %}"></script>
+<script type="text/javascript" src="{% static 'assets/vendor/datatables.net-buttons/buttons.flash.js' %}"></script>
+<script type="text/javascript" src="{% static 'assets/vendor/datatables.net-buttons/buttons.print.js' %}"></script>
+<script type="text/javascript" src="{% static 'assets/vendor/datatables.net-buttons/buttons.colVis.js' %}"></script>
+<script type="text/javascript" src="{% static 'assets/vendor/datatables.net-buttons-bs4/buttons.bootstrap4.js' %}"></script>
+<script type="text/javascript" src="{% static 'assets/vendor/datatables.net-buttons/buttons.html5.js' %}"></script>
+<script type="text/javascript" src="{% static 'assets/vendor/asrange/jquery-asRange.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'assets/vendor/bootbox/bootbox.js' %}"></script>
+<script type="text/javascript" src="{% static 'assets/js/plugin/datatables.js' %}"></script>
+{% endblock plugins %}
+
+
+{% block scripts %}
+<script type="text/javascript" src="{% static 'assets/js/pages/storage/index.js' %}"></script>
+{% endblock scripts %}
