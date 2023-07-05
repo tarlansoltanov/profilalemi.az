@@ -20,11 +20,13 @@ from django.conf import settings
 
 from server.apps.core import urls as core_urls
 from server.apps.authentication import urls as auth_urls
+from server.apps.worker import urls as worker_urls
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('auth/', include(auth_urls, namespace='auth')),
     path('', include(core_urls, namespace='core')),
+    path('worker/', include(worker_urls, namespace='worker')),
 ]
 
 handler400 = 'server.apps.core.views.handler400'
