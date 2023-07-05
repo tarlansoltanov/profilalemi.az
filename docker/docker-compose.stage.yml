@@ -14,7 +14,7 @@ services:
 
   web:
     <<: &web
-      image: project:stage
+      image: profilalemi:stage
       build:
         target: staging
         args:

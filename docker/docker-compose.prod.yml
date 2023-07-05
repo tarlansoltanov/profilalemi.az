@@ -29,7 +29,7 @@ services:
 
   web:
     <<: &web
-      image: project:prod
+      image: profilalemi:prod
       build:
         target: production
         args:

@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "base-django-template"
+name = "profilalemi"
 version = "0.1.0"
 description = ""
 authors = ["Tarlan Soltanov <tarlansoltanov@outlook.com>"]

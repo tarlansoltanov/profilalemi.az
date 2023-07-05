@@ -1,1 +1,1 @@
-# Base Django Project Template
+# Profil Aləmi

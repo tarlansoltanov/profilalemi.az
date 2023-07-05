@@ -24,7 +24,7 @@ services:
 
   web:
     <<: &web
-      image: project:dev
+      image: profilalemi:dev
       build:
         target: development
         context: .
