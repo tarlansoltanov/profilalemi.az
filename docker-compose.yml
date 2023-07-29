@@ -1,4 +1,4 @@
-version: '3.8'
+version: "3.8"
 
 services:
   db:
@@ -53,6 +53,20 @@ services:
         timeout: 5s
         retries: 5
         start_period: 30s
+
+  backup:
+    build:
+      context: .
+      dockerfile: ./docker/backup/Dockerfile
+    image: backup
+    restart: always
+    command: /bin/sh -c "cycle"
+    volumes:
+      - ./backups:/backups
+    env_file:
+      - ./config/.env
+    networks:
+      - webdata
 
 volumes:
   pgdata:
